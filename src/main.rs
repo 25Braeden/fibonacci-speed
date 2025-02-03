@@ -6,22 +6,24 @@ fn run_for_one_second() -> (u64, Integer) {
     let mut a = Integer::from(0);
     let mut b = Integer::from(1);
     let mut n = 0;
-    let mut max_fib = a.clone();
 
     while start_time.elapsed() < Duration::from_secs(1) {
         let next: Integer = (&a + &b).into();
-        max_fib = b.clone();
         // magic memory trick -> set a to b in memory then set b to next in memory
         a = std::mem::replace(&mut b, next);
         n += 1;
     }
 
-    (n - 1, max_fib)
+    (n, a)
 }
 
 fn scientific_notation(fib_value: &Integer) -> (u64, i64) {
     let fib_str = fib_value.to_string();
-    let first_8_digits: u64 = fib_str.chars().take(8).collect::<String>().parse().unwrap();
+    let first_8_digits: u64 = fib_str.chars()
+        .take(10)
+        .collect::<String>()
+        .parse()
+        .unwrap();
     let exponent = (fib_str.len() as i64) - 1;
     (first_8_digits, exponent)
 }
